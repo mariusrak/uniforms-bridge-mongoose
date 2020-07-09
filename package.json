@@ -1,0 +1,12 @@
+{
+        "name": "uniforms-bridge-mongoose",
+        "version": "1.0.0",
+        "description": "",
+        "main": "index.js",
+        "scripts": {
+                "test": "echo \"Error: no test specified\" && exit 1"
+        },
+        "keywords": [],
+        "author": "Márius Rak <info@mariusrak.sk>",
+        "license": "UNLICENSED"
+}
