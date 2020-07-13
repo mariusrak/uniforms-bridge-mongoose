@@ -2,14 +2,11 @@
         "name": "uniforms-bridge-mongoose",
         "version": "1.0.0",
         "description": "",
-        "main": "index.js",
+        "main": "dist/bundle.js",
         "scripts": {
-                "test": "mocha '__test/**'"
+                "test": "echo none"
         },
         "keywords": [],
         "author": "Márius Rak <info@mariusrak.sk>",
-        "license": "UNLICENSED",
-        "devDependencies": {
-                "mocha": "^8.0.1"
-        }
+        "license": "UNLICENSED"
 }
