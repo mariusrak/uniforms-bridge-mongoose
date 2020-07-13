@@ -1,5 +1,4 @@
 import mongoose from "mongoose/browser";
-// import invariant from 'invariant';
 import { Bridge, joinName } from "uniforms";
 
 const findType = props => {
@@ -166,7 +165,7 @@ export default class MongooseBridge extends Bridge {
                 return typeof field.default === "function" ? field.default() : field.default;
         }
 
-        getValidator(options = { clean: true, mutate: true }) {
+        getValidator() {
                 return data => {
                         const err = new mongoose.Document(data, this.schema).validateSync();
                         if (err) {
@@ -174,34 +173,16 @@ export default class MongooseBridge extends Bridge {
                                 throw err;
                         }
                 };
-
-                /*
-                const validator = this.schema.validate(options);
-
-                // Clean mutate its argument, even if mutate is false.
-                if (options.clean) {
-                        return model => validator(cloneDeep({ ...model }));
-                }
-
-                return validator;*/
         }
 
         getError(name, error) {
                 const err = error && error.errors && error.errors[name.replace(/\.\d+/g, ".$")];
-                return (err && err.properties && err.properties.message) || err;
-                /*
-                console.log("getError", name);
-                return (
-                        (error &&
-                                error.details &&
-                                error.details.find &&
-                                error.details.find(error => error.name === name)) ||
-                        null
-                );*/
+                return (err && err.properties) || err;
         }
 
         getErrorMessage(name, error) {
-                return this.getError(name, error) || "";
+                const err = this.getError(name, error);
+                return (err && err.message) || "";
                 const scopedError = this.getError(name, error);
                 return !scopedError ? "" : this.schema.messageForError(scopedError);
         }
@@ -209,14 +190,6 @@ export default class MongooseBridge extends Bridge {
         getErrorMessages(error) {
                 if (error) {
                         return Object.values(error.errors).map(e => e.properties.message);
-                        /*
-                        if (Array.isArray(error.details)) {
-                                return error.details.map(error => this.schema.messageForError(error));
-                        }
-
-                        if (error.message) {
-                                return [error.message];
-                        }*/
                 }
 
                 if (error !== undefined) {

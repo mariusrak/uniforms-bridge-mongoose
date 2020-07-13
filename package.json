@@ -4,9 +4,12 @@
         "description": "",
         "main": "index.js",
         "scripts": {
-                "test": "echo \"Error: no test specified\" && exit 1"
+                "test": "mocha '__test/**'"
         },
         "keywords": [],
         "author": "Márius Rak <info@mariusrak.sk>",
-        "license": "UNLICENSED"
+        "license": "UNLICENSED",
+        "devDependencies": {
+                "mocha": "^8.0.1"
+        }
 }
