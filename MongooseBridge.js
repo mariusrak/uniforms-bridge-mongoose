@@ -55,8 +55,6 @@ const traverseSubfields = (tree, name) => {
 };
 
 export default class MongooseBridge extends Bridge {
-        schema;
-
         constructor(schema) {
                 super();
 

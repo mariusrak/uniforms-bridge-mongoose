@@ -3,6 +3,7 @@
         "version": "1.0.0",
         "description": "",
         "main": "dist/bundle.js",
+        "module": "index.js",
         "scripts": {
                 "test": "echo none"
         },
