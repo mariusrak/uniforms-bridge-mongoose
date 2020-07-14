@@ -8,5 +8,8 @@
         },
         "keywords": [],
         "author": "Márius Rak <info@mariusrak.sk>",
-        "license": "UNLICENSED"
+        "license": "UNLICENSED",
+        "dependencies": {
+                "uniforms": "^2.6.9"
+        }
 }

@@ -1,29 +1,24 @@
 import { Schema } from "mongoose/browser";
-import { MongooseBridge } from "uniforms-bridge-mongoose";
+
+import { MongooseBridge } from "./";
 
 describe("MongooseBridge", () => {
         const noop = () => {};
         const schema = new Schema({
-                a: { type: Object },
-                "a.b": { type: Object },
-                "a.b.c": { type: String },
+                a: { b: { c: String } },
                 d: { type: String, defaultValue: "D" },
                 e: { type: String, allowedValues: ["E"] },
                 f: { type: Number, min: 42 },
                 g: { type: Number, max: 42 },
                 h: { type: Number },
                 i: { type: Date },
-                j: { type: Array, minCount: 3 },
-                "j.$": { type: String },
-                k: { type: Array },
-                "k.$": { type: String },
+                j: { type: [String], minCount: 3 },
+                k: [String],
                 l: { type: String, uniforms: "div" },
                 m: { type: String, uniforms: noop },
                 n: { type: String, uniforms: { component: "div" } },
-                o: { type: Array },
-                "o.$": { type: String, allowedValues: ["O"] },
-                p: { type: Array },
-                "p.$": { type: String, uniforms: { transform: noop } },
+                o: [{ type: String, allowedValues: ["O"] }],
+                p: [{ type: String, uniforms: { transform: noop } }],
                 r: { type: String, uniforms: { options: { a: 1, b: 2 } } },
                 s: {
                         type: String,
@@ -35,8 +30,8 @@ describe("MongooseBridge", () => {
                         },
                 },
                 t: { type: String, uniforms: { options: () => ({ a: 1, b: 2 }) } },
-                u: { type: SimpleSchema.Integer },
-                w: { type: new SimpleSchema({ x: String }) },
+                u: { type: Number },
+                w: { type: new Schema({ x: String }) },
                 x: { type: String, autoValue: () => "$setOnInsert:hack!" },
         });
 
