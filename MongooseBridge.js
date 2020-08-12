@@ -1,7 +1,11 @@
-import mongoose from "mongoose/browser";
+import mongoose from "mongoose";
 import { Bridge, joinName } from "uniforms";
+import { mongo } from "mongoose";
 
 const findType = props => {
+        if (props.type === mongoose.Schema.ObjectId) {
+                return String;
+        }
         if (props.type) {
                 return props.type;
         }
@@ -11,9 +15,6 @@ const findType = props => {
         if (typeof props === "object") {
                 return Object;
         }
-        if (props.type === mongoose.Schema.ObjectId) {
-                return String;
-        }
         return props;
 };
 
@@ -22,6 +23,7 @@ const normalizeProps = props => {
         const item = type === Array && normalizeProps(props[0]);
         const subfields = type === Object && normalizePaths(props);
         return {
+                ...props,
                 type,
                 ...(props.default ? { ["default"]: props.default } : {}),
                 ...(subfields ? { subfields } : {}),
@@ -61,7 +63,6 @@ export default class MongooseBridge extends Bridge {
                 this.schema = schema;
                 window.schema = schema;
                 this.paths = normalizePaths(this.schema.tree);
-                window.paths = this.paths;
                 this.__fields = {}; // fields name cache so traversing is minimized
         }
 
@@ -93,7 +94,7 @@ export default class MongooseBridge extends Bridge {
                 // Type should be omitted.
                 let { optional, type, uniforms, ...field } = this.getField(name);
 
-                field = { ...field, required: !optional };
+                field = { required: !optional, ...field};
 
                 if (uniforms) {
                         if (typeof uniforms === "string" || typeof uniforms === "function") {
@@ -143,7 +144,6 @@ export default class MongooseBridge extends Bridge {
 
                 field.label = field.label || name.replace(/\.\d+/g, ".$");
                 field.fieldType = typeof type === "function" ? type : type.constructor;
-
                 return field;
         }
 
@@ -186,8 +186,11 @@ export default class MongooseBridge extends Bridge {
         }
 
         getErrorMessages(error) {
-                if (error) {
-                        return Object.values(error.errors).map(e => e.properties.message);
+                if(error.message){
+                        return [error.message];
+                }
+                if (error && error.errors) {
+                        return Object.values(error.errors).map(e => e.properties && e.properties.message);
                 }
 
                 if (error !== undefined) {
